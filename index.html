@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EGK · ETS Cargo Hybrid System</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #0066FF;
+    --gold: #F5A800;
+    --cyan: #00D4FF;
+    --dark: #020914;
+    --darker: #010610;
+    --navy: #051228;
+    --panel: rgba(0,30,80,0.6);
+    --glass: rgba(0,102,255,0.08);
+    --glow: 0 0 30px rgba(0,212,255,0.4);
+  }
+
+- { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+background: var(–darker);
+color: #fff;
+font-family: ‘Rajdhani’, sans-serif;
+overflow-x: hidden;
+}
+
+/* ── STARFIELD ── */
+#stars {
+position: fixed; inset: 0; z-index: 0;
+background: radial-gradient(ellipse at 20% 50%, #051228 0%, #010610 70%);
+overflow: hidden;
+}
+#stars::before, #stars::after {
+content:’’;
+position:absolute;
+inset:0;
+background-image:
+radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.6) 0%, transparent 100%),
+radial-gradient(1px 1px at 30% 80%, rgba(255,255,255,0.4) 0%, transparent 100%),
+radial-gradient(1px 1px at 50% 10%, rgba(255,255,255,0.5) 0%, transparent 100%),
+radial-gradient(1px 1px at 70% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
+radial-gradient(1px 1px at 90% 30%, rgba(255,255,255,0.6) 0%, transparent 100%),
+radial-gradient(1px 1px at 15% 45%, rgba(255,255,255,0.4) 0%, transparent 100%),
+radial-gradient(1px 1px at 85% 75%, rgba(255,255,255,0.5) 0%, transparent 100%),
+radial-gradient(1px 1px at 55% 90%, rgba(255,255,255,0.3) 0%, transparent 100%),
+radial-gradient(1px 1px at 40% 55%, rgba(0,212,255,0.4) 0%, transparent 100%),
+radial-gradient(1px 1px at 60% 35%, rgba(0,102,255,0.5) 0%, transparent 100%);
+background-size: 400px 400px;
+}
+#stars::after { background-size: 600px 600px; transform: rotate(30deg); }
+
+/* ── LAYOUT ── */
+.wrapper { position: relative; z-index: 1; }
+
+/* ── NAV ── */
+nav {
+display: flex; align-items: center; justify-content: space-between;
+padding: 18px 48px;
+background: rgba(1,6,16,0.85);
+backdrop-filter: blur(20px);
+border-bottom: 1px solid rgba(0,102,255,0.3);
+position: sticky; top: 0; z-index: 100;
+}
+.nav-logo { display:flex; align-items:center; gap:14px; }
+.nav-logo img { height: 48px; filter: drop-shadow(0 0 12px rgba(0,212,255,0.7)); }
+.nav-title { font-family:‘Exo 2’; font-weight:700; font-size:1.1rem; letter-spacing:3px; color: var(–cyan); }
+.nav-links { display:flex; gap:32px; list-style:none; }
+.nav-links a { font-size:.85rem; letter-spacing:2px; color:rgba(255,255,255,0.6); text-decoration:none; transition:.3s; }
+.nav-links a:hover { color:var(–cyan); }
+.nav-badge {
+background: linear-gradient(135deg, var(–blue), var(–cyan));
+padding: 8px 20px; border-radius: 4px;
+font-family:‘Exo 2’; font-weight:700; font-size:.8rem; letter-spacing:2px;
+box-shadow: 0 0 20px rgba(0,102,255,0.5);
+}
+
+/* ── HERO ── */
+.hero {
+min-height: 100vh;
+display: flex; flex-direction: column; justify-content: center;
+padding: 60px 48px 0;
+position: relative;
+overflow: hidden;
+}
+.hero-grid-lines {
+position: absolute; inset: 0;
+background-image:
+linear-gradient(rgba(0,102,255,0.06) 1px, transparent 1px),
+linear-gradient(90deg, rgba(0,102,255,0.06) 1px, transparent 1px);
+background-size: 60px 60px;
+mask-image: linear-gradient(to bottom, transparent, rgba(0,0,0,0.8) 20%, rgba(0,0,0,0.8) 80%, transparent);
+}
+.hero-eyebrow {
+font-family:‘Share Tech Mono’; font-size:.75rem; letter-spacing:4px;
+color: var(–gold); margin-bottom: 16px;
+animation: fadeUp .8s ease both;
+}
+.hero-headline {
+font-family:‘Exo 2’; font-weight:900;
+font-size: clamp(2.5rem, 6vw, 5.5rem);
+line-height: 1.05;
+animation: fadeUp .8s .15s ease both;
+}
+.hero-headline span { color: var(–cyan); }
+.hero-headline em { color: var(–gold); font-style:normal; }
+.hero-sub {
+font-size:1.1rem; color:rgba(255,255,255,0.65); max-width:540px;
+margin-top:20px; line-height:1.7;
+animation: fadeUp .8s .3s ease both;
+}
+.hero-cta {
+display: flex; gap: 16px; margin-top: 36px;
+animation: fadeUp .8s .45s ease both;
+}
+.btn-primary {
+padding: 14px 36px; background: linear-gradient(135deg, var(–blue), var(–cyan));
+border: none; border-radius: 4px; color: #fff;
+font-family:‘Exo 2’; font-weight:700; font-size:.9rem; letter-spacing:2px;
+cursor: pointer; transition: .3s;
+box-shadow: 0 0 30px rgba(0,102,255,0.5);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(0,212,255,0.6); }
+.btn-outline {
+padding: 14px 36px; background: transparent;
+border: 1px solid rgba(0,212,255,0.4); border-radius: 4px; color: var(–cyan);
+font-family:‘Exo 2’; font-weight:700; font-size:.9rem; letter-spacing:2px;
+cursor: pointer; transition: .3s;
+}
+.btn-outline:hover { border-color: var(–cyan); background: rgba(0,212,255,0.08); }
+
+/* ── STATION SCENE ── */
+.station-scene {
+width: 100%; height: 480px;
+position: relative;
+margin-top: 60px;
+overflow: hidden;
+animation: fadeUp .8s .6s ease both;
+}
+.station-bg {
+position: absolute; inset: 0;
+background: linear-gradient(180deg, transparent 0%, rgba(0,10,40,0.95) 100%);
+}
+
+/* Platform */
+.platform {
+position: absolute; bottom: 0; left: 0; right: 0;
+height: 120px;
+background: linear-gradient(180deg, #1a1a2e 0%, #0d0d1a 100%);
+border-top: 3px solid rgba(0,102,255,0.5);
+}
+.platform::before {
+content:’’;
+position: absolute; top:-2px; left:0; right:0; height:2px;
+background: linear-gradient(90deg, transparent, var(–cyan), var(–blue), var(–cyan), transparent);
+animation: scanLine 3s linear infinite;
+}
+.platform-tiles {
+position: absolute; inset: 0;
+background-image: repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 40px);
+}
+.platform-edge {
+position: absolute; top:0; left:0; right:0;
+height: 6px;
+background: repeating-linear-gradient(90deg, var(–gold) 0px, var(–gold) 20px, transparent 20px, transparent 30px);
+opacity: 0.6;
+}
+
+/* Rail tracks */
+.tracks {
+position: absolute;
+bottom: 120px; left: -20px; right: -20px;
+height: 30px;
+}
+.rail {
+position: absolute;
+height: 4px; left: 0; right: 0;
+background: linear-gradient(90deg, #334466, #7799cc, #334466);
+border-radius: 2px;
+box-shadow: 0 2px 8px rgba(0,50,150,0.6);
+}
+.rail-top { top: 4px; }
+.rail-bot { bottom: 4px; }
+.sleepers {
+position: absolute; inset: 0;
+background-image: repeating-linear-gradient(90deg,
+rgba(60,40,20,0.8) 0px, rgba(60,40,20,0.8) 8px,
+transparent 8px, transparent 24px);
+}
+
+/* Train */
+.train {
+position: absolute;
+bottom: 145px;
+display: flex; align-items: flex-end;
+animation: trainRoll 18s linear infinite;
+filter: drop-shadow(0 10px 30px rgba(0,100,255,0.4));
+}
+@keyframes trainRoll {
+0%   { transform: translateX(-1400px); }
+35%  { transform: translateX(calc(50vw - 350px)); }
+55%  { transform: translateX(calc(50vw - 350px)); }
+100% { transform: translateX(110vw); }
+}
+
+/* SVG Train Locomotive */
+.loco-wrap { position: relative; }
+.loco-svg { display:block; }
+
+/* Cargo flat cars */
+.flat-car {
+width: 180px; height: 32px;
+background: linear-gradient(180deg, #1e3a6e 0%, #112244 60%, #0a1830 100%);
+border: 1px solid rgba(0,102,255,0.4);
+border-radius: 3px 3px 0 0;
+position: relative;
+margin-left: 4px;
+flex-shrink: 0;
+}
+.flat-car::before {
+content:’’;
+position: absolute; bottom: -8px; left: 10px; right: 10px; height: 8px;
+background: #0a1020;
+border-radius: 0 0 4px 4px;
+}
+/* Wheels */
+.flat-car::after {
+content:’’;
+position: absolute; bottom: -14px; left: 0; right: 0;
+height: 8px;
+background: radial-gradient(circle at 25% 50%, #4488cc 0%, #1a3366 60%, #0d1a33 100%),
+radial-gradient(circle at 75% 50%, #4488cc 0%, #1a3366 60%, #0d1a33 100%);
+background-size: 24px 24px;
+background-position: 20px 0, 140px 0;
+background-repeat: no-repeat;
+}
+
+/* Truck on flatcar */
+.truck-on-train {
+position: absolute;
+bottom: 30px;
+left: 10px;
+}
+
+/* Car on flatcar */
+.car-on-train {
+position: absolute;
+bottom: 30px;
+left: 20px;
+}
+
+/* Passenger car */
+.pass-car {
+width: 200px; height: 55px;
+background: linear-gradient(180deg, #e8e8e0 0%, #d0d0c8 40%, #b0b0a8 100%);
+border-radius: 8px 8px 3px 3px;
+position: relative;
+margin-left: 4px;
+border: 1px solid #fff3;
+flex-shrink: 0;
+}
+.pass-car-stripe {
+position: absolute; top: 16px; left: 0; right: 0; height: 14px;
+background: linear-gradient(90deg, var(–blue), var(–cyan), var(–blue));
+opacity: 0.85;
+}
+.pass-car-windows {
+position: absolute; top: 6px; left: 12px; right: 12px;
+display: flex; gap: 8px;
+}
+.win {
+width: 22px; height: 16px;
+background: rgba(100,200,255,0.7);
+border-radius: 3px 3px 0 0;
+box-shadow: inset 0 0 4px rgba(0,0,0,0.3);
+}
+.pass-car::after {
+content:’’;
+position: absolute; bottom: -14px; left: 0; right: 0;
+height: 8px;
+background:
+radial-gradient(circle at 30px 4px, #4488cc 0%, #1a3366 60%, #0d1a33 100%),
+radial-gradient(circle at 170px 4px, #4488cc 0%, #1a3366 60%, #0d1a33 100%);
+background-size: 24px 24px;
+background-repeat: no-repeat;
+}
+
+/* Platform overhead structure */
+.canopy {
+position: absolute;
+top: 30px; left: 5%; right: 5%;
+height: 60px;
+border-top: 3px solid rgba(0,102,255,0.3);
+border-left: 3px solid rgba(0,102,255,0.2);
+border-right: 3px solid rgba(0,102,255,0.2);
+}
+.canopy-support {
+position: absolute; bottom: 0; width: 3px;
+background: rgba(0,102,255,0.4);
+height: 250px; top: 60px;
+}
+.canopy-support:nth-child(1) { left: 0; }
+.canopy-support:nth-child(2) { left: 20%; }
+.canopy-support:nth-child(3) { left: 40%; }
+.canopy-support:nth-child(4) { left: 60%; }
+.canopy-support:nth-child(5) { left: 80%; }
+.canopy-support:nth-child(6) { right: 0; }
+
+/* Station sign */
+.station-sign {
+position: absolute;
+top: 20px; left: 50%; transform: translateX(-50%);
+background: var(–panel);
+backdrop-filter: blur(10px);
+border: 1px solid rgba(0,212,255,0.4);
+padding: 10px 30px;
+border-radius: 4px;
+text-align: center;
+white-space: nowrap;
+}
+.station-sign-name {
+font-family:‘Exo 2’; font-weight:700; font-size:1rem; letter-spacing:4px;
+color: var(–cyan);
+}
+.station-sign-route {
+font-family:‘Share Tech Mono’; font-size:.65rem; color: var(–gold);
+letter-spacing: 2px; margin-top: 2px;
+}
+
+/* Boarding vehicles (separate from train) */
+.boarding-area {
+position: absolute;
+bottom: 120px; right: 8%;
+display: flex; flex-direction: column; gap: 10px;
+align-items: flex-end;
+}
+
+/* Ramp indicator */
+.ramp {
+position: absolute;
+bottom: 118px; right: 22%;
+width: 120px; height: 8px;
+background: linear-gradient(90deg, #334, var(–gold));
+transform: rotate(-8deg);
+transform-origin: right bottom;
+opacity: 0.8;
+}
+
+/* Animated vehicles approaching */
+.vehicle-truck {
+animation: truckApproach 18s linear infinite;
+animation-delay: 2s;
+}
+.vehicle-car {
+animation: carApproach 18s linear infinite;
+animation-delay: 4s;
+}
+@keyframes truckApproach {
+0%,100% { transform: translateX(300px); opacity:0; }
+20%      { transform: translateX(300px); opacity:0; }
+40%      { transform: translateX(0);     opacity:1; }
+55%      { transform: translateX(0);     opacity:0; }
+}
+@keyframes carApproach {
+0%,100% { transform: translateX(200px); opacity:0; }
+25%     { transform: translateX(200px); opacity:0; }
+45%     { transform: translateX(0);     opacity:1; }
+56%     { transform: translateX(0);     opacity:0; }
+}
+
+/* Passengers */
+.passengers {
+position: absolute;
+bottom: 122px;
+display: flex; gap: 14px;
+animation: passAnim 18s ease-in-out infinite;
+}
+@keyframes passAnim {
+0%,100% { left:-200px; opacity:0; }
+10%     { left:-200px; opacity:0; }
+30%     { left:30%;    opacity:1; }
+50%     { left:30%;    opacity:1; }
+65%     { left:30%;    opacity:0; }
+}
+
+/* Scanline */
+@keyframes scanLine { 0%{background-position:0 0} 100%{background-position:200px 0} }
+
+/* ── STATS STRIP ── */
+.stats-strip {
+display: flex;
+background: rgba(0,15,50,0.8);
+border-top: 1px solid rgba(0,102,255,0.3);
+border-bottom: 1px solid rgba(0,102,255,0.3);
+padding: 30px 48px;
+gap: 0;
+}
+.stat-item {
+flex: 1;
+text-align: center;
+padding: 0 24px;
+border-right: 1px solid rgba(0,102,255,0.2);
+}
+.stat-item:last-child { border-right: none; }
+.stat-num {
+font-family:‘Exo 2’; font-weight:900; font-size:2.8rem;
+background: linear-gradient(135deg, var(–cyan), var(–blue));
+-webkit-background-clip: text; -webkit-text-fill-color: transparent;
+line-height:1;
+}
+.stat-label { font-size:.8rem; color:rgba(255,255,255,0.5); letter-spacing:2px; margin-top:6px; }
+
+/* ── HOW IT WORKS ── */
+.section { padding: 100px 48px; }
+.section-header { text-align:center; margin-bottom: 64px; }
+.section-tag {
+font-family:‘Share Tech Mono’; font-size:.7rem; letter-spacing:4px;
+color: var(–gold); margin-bottom: 12px;
+}
+.section-title {
+font-family:‘Exo 2’; font-weight:800; font-size:clamp(1.8rem, 3vw, 2.8rem);
+line-height:1.1;
+}
+.section-title span { color: var(–cyan); }
+
+.steps-grid {
+display: grid; grid-template-columns: repeat(4,1fr); gap: 2px;
+background: rgba(0,102,255,0.1);
+border: 1px solid rgba(0,102,255,0.2);
+border-radius: 8px; overflow: hidden;
+}
+.step-card {
+background: rgba(2,9,20,0.9);
+padding: 40px 28px;
+position: relative;
+transition: .4s;
+overflow: hidden;
+}
+.step-card::before {
+content:’’;
+position: absolute; inset: 0;
+background: linear-gradient(135deg, rgba(0,102,255,0.1), transparent);
+opacity: 0; transition: .4s;
+}
+.step-card:hover::before { opacity:1; }
+.step-card:hover { transform: translateY(-4px); }
+.step-num {
+font-family:‘Exo 2’; font-weight:900; font-size:4rem;
+color: rgba(0,102,255,0.2); line-height:1;
+position: absolute; top:16px; right:20px;
+}
+.step-icon { font-size: 2.5rem; margin-bottom: 16px; }
+.step-title {
+font-family:‘Exo 2’; font-weight:700; font-size:1rem; letter-spacing:2px;
+color: var(–gold); margin-bottom: 10px;
+}
+.step-desc { font-size:.9rem; color:rgba(255,255,255,0.6); line-height:1.7; }
+.step-accent {
+position: absolute; bottom:0; left:0; right:0; height:3px;
+background: linear-gradient(90deg, var(–blue), var(–cyan));
+transform: scaleX(0); transition: .4s;
+transform-origin: left;
+}
+.step-card:hover .step-accent { transform: scaleX(1); }
+
+/* ── ROUTE MAP ── */
+.route-section {
+padding: 80px 48px;
+background: linear-gradient(135deg, rgba(0,15,50,0.6), rgba(2,9,20,0.9));
+border-top: 1px solid rgba(0,102,255,0.15);
+border-bottom: 1px solid rgba(0,102,255,0.15);
+}
+.route-visual {
+display: flex; align-items: center; justify-content: center;
+gap: 0; margin-top: 48px; position: relative;
+}
+.route-node {
+text-align: center; position: relative; z-index: 2;
+}
+.route-dot {
+width: 70px; height: 70px;
+border-radius: 50%;
+background: radial-gradient(circle, var(–cyan), var(–blue));
+display: flex; align-items: center; justify-content: center;
+margin: 0 auto 12px;
+box-shadow: 0 0 30px rgba(0,212,255,0.6), 0 0 60px rgba(0,102,255,0.3);
+font-size: 1.5rem;
+animation: pulse 2s ease infinite;
+}
+.route-dot.mid { background: radial-gradient(circle, var(–gold), #c87000); box-shadow: 0 0 30px rgba(245,168,0,0.6); animation-delay:.5s; }
+@keyframes pulse {
+0%,100% { box-shadow: 0 0 30px rgba(0,212,255,0.6), 0 0 60px rgba(0,102,255,0.3); }
+50%      { box-shadow: 0 0 50px rgba(0,212,255,0.9), 0 0 90px rgba(0,102,255,0.5); }
+}
+.route-name {
+font-family:‘Exo 2’; font-weight:700; font-size:.9rem; letter-spacing:3px;
+color: var(–cyan);
+}
+.route-sub { font-size:.7rem; color:rgba(255,255,255,0.4); letter-spacing:1px; margin-top:4px; }
+.route-line {
+flex: 1; height: 3px; max-width: 200px;
+background: linear-gradient(90deg, var(–cyan), var(–blue), var(–cyan));
+position: relative; overflow: hidden;
+}
+.route-line::after {
+content:’’;
+position: absolute; top:0; left:-100%; width:100%; height:100%;
+background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+animation: trainPulse 2s ease infinite;
+}
+@keyframes trainPulse { 0%{left:-100%} 100%{left:200%} }
+.route-time {
+text-align:center;
+font-family:‘Share Tech Mono’; font-size:.7rem; color:var(–gold);
+margin-top: 6px; letter-spacing:2px;
+}
+
+/* ── BENEFITS ── */
+.benefits-grid {
+display: grid; grid-template-columns: repeat(3,1fr); gap: 24px;
+}
+.benefit-card {
+background: var(–panel);
+backdrop-filter: blur(10px);
+border: 1px solid rgba(0,102,255,0.2);
+border-radius: 8px;
+padding: 36px 28px;
+transition: .4s;
+position: relative; overflow: hidden;
+}
+.benefit-card::after {
+content:’’;
+position:absolute; top:0; left:0; right:0; height:2px;
+background: linear-gradient(90deg, var(–blue), var(–cyan));
+transform: scaleX(0); transition: .4s; transform-origin: left;
+}
+.benefit-card:hover { transform: translateY(-6px); border-color: rgba(0,212,255,0.4); }
+.benefit-card:hover::after { transform: scaleX(1); }
+.benefit-icon { font-size:2.4rem; margin-bottom:16px; }
+.benefit-title {
+font-family:‘Exo 2’; font-weight:700; font-size:1.1rem; letter-spacing:1px;
+color: var(–gold); margin-bottom:10px;
+}
+.benefit-value {
+font-family:‘Exo 2’; font-weight:900; font-size:2.2rem;
+color: var(–cyan); line-height:1;
+margin-bottom:8px;
+}
+.benefit-desc { font-size:.88rem; color:rgba(255,255,255,0.55); line-height:1.6; }
+
+/* ── CALL TO ACTION ── */
+.cta-section {
+padding: 120px 48px;
+text-align: center;
+background: radial-gradient(ellipse at center, rgba(0,40,120,0.4) 0%, transparent 70%);
+position: relative;
+}
+.cta-quote {
+font-family:‘Exo 2’; font-style:italic; font-size:clamp(1.2rem,2.5vw,1.8rem);
+color:rgba(255,255,255,0.8); max-width:700px; margin:0 auto 48px;
+line-height:1.6;
+border-left: 4px solid var(–gold);
+padding-left: 32px;
+text-align: left;
+}
+.cta-quote em { color: var(–gold); font-style:normal; }
+.cta-title {
+font-family:‘Exo 2’; font-weight:900;
+font-size: clamp(2rem, 5vw, 4rem);
+line-height: 1.1; margin-bottom: 32px;
+}
+.cta-title .line2 { color: var(–cyan); }
+.cta-title .line3 { color: var(–gold); }
+
+/* ── FOOTER ── */
+footer {
+background: rgba(1,6,16,0.95);
+border-top: 1px solid rgba(0,102,255,0.2);
+padding: 40px 48px;
+display: flex; align-items: center; justify-content: space-between;
+}
+.footer-logo { display:flex; align-items:center; gap:16px; }
+.footer-logo img { height:40px; opacity:.8; }
+.footer-copy { font-size:.78rem; color:rgba(255,255,255,0.3); letter-spacing:1px; }
+.footer-tagline {
+font-family:‘Share Tech Mono’; font-size:.7rem; letter-spacing:3px;
+color: var(–cyan); opacity:.6;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+from { opacity:0; transform:translateY(24px); }
+to   { opacity:1; transform:translateY(0); }
+}
+.reveal { opacity:0; transform:translateY(30px); transition: opacity .7s, transform .7s; }
+.revealed { opacity:1; transform:translateY(0); }
+
+/* ── TICKER ── */
+.ticker {
+background: rgba(0,40,100,0.9);
+border-top: 1px solid rgba(0,212,255,0.3);
+border-bottom: 1px solid rgba(0,212,255,0.3);
+padding: 10px 0; overflow: hidden;
+}
+.ticker-inner {
+display: flex; white-space: nowrap;
+animation: ticker 20s linear infinite;
+}
+.ticker-item {
+font-family:‘Share Tech Mono’; font-size:.72rem; letter-spacing:2px;
+color:rgba(255,255,255,0.7); padding: 0 48px;
+}
+.ticker-item span { color: var(–gold); }
+@keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* ── EGK GLOW LOGO ── */
+.egk-watermark {
+position: absolute;
+right: 6%; top: 50%; transform: translateY(-50%);
+opacity: 0.06;
+font-family:‘Exo 2’; font-weight:900; font-size:18rem;
+color: var(–blue); line-height:1;
+pointer-events:none;
+user-select:none;
+}
+
+/* responsive */
+@media(max-width:900px) {
+nav { padding:14px 20px; }
+.nav-links { display:none; }
+.hero { padding:40px 20px 0; }
+.stats-strip { flex-wrap:wrap; padding:20px; }
+.stat-item { flex:0 0 50%; border:none; border-bottom:1px solid rgba(0,102,255,.2); padding:16px; }
+.section { padding:60px 20px; }
+.steps-grid { grid-template-columns:1fr 1fr; }
+.benefits-grid { grid-template-columns:1fr; }
+.route-visual { flex-direction:column; }
+.route-line { width:3px; height:80px; max-width:none; }
+footer { flex-direction:column; gap:16px; text-align:center; }
+}
+</style>
+
+</head>
+<body>
+<div id="stars"></div>
+<div class="wrapper">
+
+  <!-- NAV -->
+
+  <nav>
+    <div class="nav-logo">
+      <img src="https://egkhor.com.my/home/wp-content/uploads/2026/02/cropped-IMG_7598.png" alt="EGK Logo" onerror="this.style.display='none'">
+      <span class="nav-title">EGK · ETS CARGO</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#concept">CONCEPT</a></li>
+      <li><a href="#howitworks">HOW IT WORKS</a></li>
+      <li><a href="#route">ROUTE</a></li>
+      <li><a href="#benefits">BENEFITS</a></li>
+    </ul>
+    <button class="nav-badge">THE PROPOSAL</button>
+  </nav>
+
+  <!-- TICKER -->
+
+  <div class="ticker">
+    <div class="ticker-inner">
+      <span class="ticker-item">PENANG → KL → JOHOR &nbsp;|&nbsp; <span>DIESEL REDUCTION UP TO 40%</span> &nbsp;|&nbsp; LOGISTICS COST SAVINGS 15–25% &nbsp;|&nbsp; <span>ZERO DIESEL ON THE MOVE</span> &nbsp;|&nbsp; ETS CARGO HYBRID SYSTEM &nbsp;|&nbsp; <span>MALAYSIA'S GREENER LOGISTICS FUTURE</span> &nbsp;|&nbsp;</span>
+      <span class="ticker-item">PENANG → KL → JOHOR &nbsp;|&nbsp; <span>DIESEL REDUCTION UP TO 40%</span> &nbsp;|&nbsp; LOGISTICS COST SAVINGS 15–25% &nbsp;|&nbsp; <span>ZERO DIESEL ON THE MOVE</span> &nbsp;|&nbsp; ETS CARGO HYBRID SYSTEM &nbsp;|&nbsp; <span>MALAYSIA'S GREENER LOGISTICS FUTURE</span> &nbsp;|&nbsp;</span>
+    </div>
+  </div>
+
+  <!-- HERO -->
+
+  <section class="hero" id="concept">
+    <div class="hero-grid-lines"></div>
+    <div class="egk-watermark">EGK</div>
+    <div class="hero-eyebrow">// MALAYSIA'S DIESEL CONSTRAINT — A STRATEGIC OPPORTUNITY</div>
+    <h1 class="hero-headline">
+      <span>ETS CARGO</span><br>
+      <em>HYBRID</em> SYSTEM<br>
+      <span style="font-size:0.55em; letter-spacing:.15em; color:rgba(255,255,255,0.5)">KTM ETS + EUROSTAR TRUCK-ON-TRAIN CONCEPT</span>
+    </h1>
+    <p class="hero-sub">A dual-purpose electrified rail system that carries passengers, trucks and cars — reducing diesel dependency and transforming Malaysian logistics.</p>
+    <div class="hero-cta">
+      <button class="btn-primary">EXPLORE THE CONCEPT</button>
+      <button class="btn-outline">STRATEGIC IMPACT ↓</button>
+    </div>
+
+```
+<!-- STATION SCENE -->
+<div class="station-scene">
+  <!-- Overhead canopy -->
+  <div class="canopy">
+    <div class="canopy-support"></div>
+    <div class="canopy-support"></div>
+    <div class="canopy-support"></div>
+    <div class="canopy-support"></div>
+    <div class="canopy-support"></div>
+    <div class="canopy-support"></div>
+  </div>
+
+  <!-- Station sign -->
+  <div class="station-sign">
+    <div class="station-sign-name">ETS CARGO PENANG TERMINAL</div>
+    <div class="station-sign-route">PENANG → KL → JOHOR ▸ NEXT DEPARTURE: 14:32</div>
+  </div>
+
+  <!-- Tracks -->
+  <div class="tracks">
+    <div class="sleepers"></div>
+    <div class="rail rail-top"></div>
+    <div class="rail rail-bot"></div>
+  </div>
+
+  <!-- THE TRAIN (SVG) -->
+  <div class="train" id="train">
+
+    <!-- Locomotive (SVG) -->
+    <div class="loco-wrap">
+      <svg class="loco-svg" width="320" height="85" viewBox="0 0 320 85" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Body -->
+        <path d="M40 15 Q60 5 90 8 L300 8 Q318 8 318 22 L318 62 Q318 72 308 72 L30 72 Q16 72 12 60 L8 40 Q6 28 16 20 Z" fill="url(#locoGrad)" stroke="rgba(0,150,255,0.5)" stroke-width="1"/>
+        <!-- Nose stripe -->
+        <path d="M8 40 L40 15 L40 72 L8 60 Z" fill="url(#noseGrad)"/>
+        <!-- Blue stripe -->
+        <rect x="40" y="28" width="278" height="12" fill="url(#stripeGrad)" opacity="0.9"/>
+        <!-- Yellow stripe -->
+        <rect x="40" y="38" width="278" height="4" fill="#F5A800" opacity="0.8"/>
+        <!-- Windshield -->
+        <path d="M36 18 L60 10 L60 45 L36 52 Z" fill="rgba(100,220,255,0.5)" stroke="rgba(0,200,255,0.3)" stroke-width="1"/>
+        <!-- KTM ETS text -->
+        <text x="80" y="55" fill="white" font-family="'Exo 2',sans-serif" font-weight="700" font-size="10" letter-spacing="2">KTM ETS</text>
+        <!-- EGK logo area -->
+        <circle cx="240" cy="40" r="18" fill="rgba(0,30,80,0.8)" stroke="rgba(0,212,255,0.5)" stroke-width="1.5"/>
+        <text x="240" y="44" fill="#00D4FF" font-family="'Exo 2',sans-serif" font-weight="900" font-size="9" text-anchor="middle" letter-spacing="1">EGK</text>
+        <!-- Headlights -->
+        <ellipse cx="16" cy="35" rx="6" ry="4" fill="rgba(255,240,150,0.9)" filter="url(#headlight)"/>
+        <ellipse cx="16" cy="50" rx="4" ry="3" fill="rgba(200,200,255,0.7)"/>
+        <!-- Wheels -->
+        <circle cx="60" cy="72" r="12" fill="url(#wheelGrad)" stroke="#224" stroke-width="1"/>
+        <circle cx="60" cy="72" r="4" fill="#aac"/>
+        <circle cx="130" cy="72" r="12" fill="url(#wheelGrad)" stroke="#224" stroke-width="1"/>
+        <circle cx="130" cy="72" r="4" fill="#aac"/>
+        <circle cx="200" cy="72" r="12" fill="url(#wheelGrad)" stroke="#224" stroke-width="1"/>
+        <circle cx="200" cy="72" r="4" fill="#aac"/>
+        <circle cx="280" cy="72" r="12" fill="url(#wheelGrad)" stroke="#224" stroke-width="1"/>
+        <circle cx="280" cy="72" r="4" fill="#aac"/>
+        <!-- Pantograph -->
+        <line x1="180" y1="8" x2="160" y2="-10" stroke="rgba(0,212,255,0.8)" stroke-width="1.5"/>
+        <line x1="200" y1="8" x2="220" y2="-10" stroke="rgba(0,212,255,0.8)" stroke-width="1.5"/>
+        <line x1="160" y1="-10" x2="220" y2="-10" stroke="rgba(0,212,255,0.8)" stroke-width="2"/>
+        <!-- Glow -->
+        <ellipse cx="16" cy="40" rx="30" ry="20" fill="rgba(255,240,100,0.08)"/>
+        <defs>
+          <linearGradient id="locoGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#1a2a4a"/>
+            <stop offset="40%" stop-color="#e8e8e0"/>
+            <stop offset="100%" stop-color="#d0d0c8"/>
+          </linearGradient>
+          <linearGradient id="noseGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#1a2a4a"/>
+            <stop offset="100%" stop-color="#2a4a8a"/>
+          </linearGradient>
+          <linearGradient id="stripeGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#0055dd"/>
+            <stop offset="50%" stop-color="#00aaff"/>
+            <stop offset="100%" stop-color="#0055dd"/>
+          </linearGradient>
+          <radialGradient id="wheelGrad" cx="40%" cy="30%">
+            <stop offset="0%" stop-color="#6699cc"/>
+            <stop offset="100%" stop-color="#112244"/>
+          </radialGradient>
+          <filter id="headlight">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feComposite in="SourceGraphic" in2="blur"/>
+          </filter>
+        </defs>
+      </svg>
+    </div>
+
+    <!-- Passenger Car -->
+    <div class="pass-car">
+      <div class="pass-car-stripe"></div>
+      <div class="pass-car-windows">
+        <div class="win"></div><div class="win"></div><div class="win"></div>
+        <div class="win"></div><div class="win"></div><div class="win"></div>
+      </div>
+    </div>
+
+    <!-- Flat Car with Truck -->
+    <div class="flat-car" style="width:220px;">
+      <div class="truck-on-train">
+        <svg width="200" height="50" viewBox="0 0 200 50" fill="none">
+          <!-- Trailer -->
+          <rect x="0" y="5" width="130" height="35" rx="3" fill="#1e3a6e" stroke="rgba(0,150,255,0.5)" stroke-width="1"/>
+          <rect x="5" y="9" width="120" height="25" rx="2" fill="rgba(0,40,100,0.8)"/>
+          <text x="65" y="25" fill="rgba(0,212,255,0.7)" font-family="'Exo 2'" font-weight="700" font-size="8" text-anchor="middle" letter-spacing="2">EGK CARGO</text>
+          <!-- Cab -->
+          <rect x="130" y="8" width="60" height="32" rx="4" fill="#2a4a8a" stroke="rgba(0,180,255,0.4)" stroke-width="1"/>
+          <rect x="138" y="12" width="40" height="16" rx="2" fill="rgba(100,200,255,0.4)"/>
+          <!-- Wheels -->
+          <circle cx="20" cy="44" r="7" fill="#2244aa" stroke="#aac" stroke-width="1"/>
+          <circle cx="20" cy="44" r="3" fill="#aac"/>
+          <circle cx="40" cy="44" r="7" fill="#2244aa" stroke="#aac" stroke-width="1"/>
+          <circle cx="40" cy="44" r="3" fill="#aac"/>
+          <circle cx="100" cy="44" r="7" fill="#2244aa" stroke="#aac" stroke-width="1"/>
+          <circle cx="100" cy="44" r="3" fill="#aac"/>
+          <circle cx="120" cy="44" r="7" fill="#2244aa" stroke="#aac" stroke-width="1"/>
+          <circle cx="120" cy="44" r="3" fill="#aac"/>
+          <circle cx="160" cy="44" r="7" fill="#2244aa" stroke="#aac" stroke-width="1"/>
+          <circle cx="160" cy="44" r="3" fill="#aac"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Flat Car with Car -->
+    <div class="flat-car" style="width:180px;">
+      <div class="car-on-train">
+        <svg width="140" height="42" viewBox="0 0 140 42" fill="none">
+          <!-- Car body -->
+          <path d="M10 28 Q20 14 40 12 L100 12 Q120 14 130 28 Z" fill="#2a4a8a" stroke="rgba(0,180,255,0.4)" stroke-width="1"/>
+          <rect x="5" y="26" width="130" height="14" rx="3" fill="#1e3366" stroke="rgba(0,120,255,0.4)" stroke-width="1"/>
+          <!-- Windows -->
+          <path d="M30 14 Q38 10 55 11 L55 24 L30 24 Z" fill="rgba(100,200,255,0.5)"/>
+          <path d="M58 11 L95 11 L95 24 L58 24 Z" fill="rgba(100,200,255,0.5)"/>
+          <!-- Wheels -->
+          <circle cx="30" cy="40" r="8" fill="#2244aa" stroke="#aac" stroke-width="1"/>
+          <circle cx="30" cy="40" r="3" fill="#aac"/>
+          <circle cx="110" cy="40" r="8" fill="#2244aa" stroke="#aac" stroke-width="1"/>
+          <circle cx="110" cy="40" r="3" fill="#aac"/>
+          <!-- Headlights -->
+          <ellipse cx="8" cy="30" rx="4" ry="3" fill="rgba(255,240,150,0.8)"/>
+        </svg>
+      </div>
+    </div>
+
+  </div><!-- end train -->
+
+  <!-- Platform -->
+  <div class="platform">
+    <div class="platform-tiles"></div>
+    <div class="platform-edge"></div>
+    <!-- Passengers waiting -->
+    <div class="passengers">
+      <!-- Passenger figures -->
+      <svg width="30" height="55" viewBox="0 0 30 55">
+        <circle cx="15" cy="10" r="7" fill="rgba(200,220,255,0.8)"/>
+        <rect x="9" y="18" width="12" height="20" rx="3" fill="rgba(0,100,200,0.7)"/>
+        <rect x="8" y="38" width="5" height="14" rx="2" fill="rgba(50,80,150,0.8)"/>
+        <rect x="17" y="38" width="5" height="14" rx="2" fill="rgba(50,80,150,0.8)"/>
+        <!-- luggage -->
+        <rect x="22" y="30" width="7" height="10" rx="1" fill="rgba(200,150,50,0.8)"/>
+      </svg>
+      <svg width="28" height="55" viewBox="0 0 28 55">
+        <circle cx="14" cy="10" r="7" fill="rgba(220,200,190,0.8)"/>
+        <rect x="8" y="18" width="12" height="20" rx="3" fill="rgba(180,0,80,0.6)"/>
+        <rect x="7" y="38" width="5" height="14" rx="2" fill="rgba(100,50,120,0.8)"/>
+        <rect x="16" y="38" width="5" height="14" rx="2" fill="rgba(100,50,120,0.8)"/>
+      </svg>
+      <svg width="30" height="55" viewBox="0 0 30 55">
+        <circle cx="15" cy="10" r="7" fill="rgba(210,180,140,0.8)"/>
+        <rect x="9" y="18" width="12" height="22" rx="3" fill="rgba(30,120,60,0.7)"/>
+        <rect x="8" y="40" width="5" height="13" rx="2" fill="rgba(40,80,40,0.8)"/>
+        <rect x="17" y="40" width="5" height="13" rx="2" fill="rgba(40,80,40,0.8)"/>
+        <rect x="22" y="28" width="7" height="10" rx="1" fill="rgba(150,100,50,0.8)"/>
+      </svg>
+    </div>
+
+    <!-- Loading ramp -->
+    <div class="ramp"></div>
+
+    <!-- Approaching truck -->
+    <div class="vehicle-truck" style="position:absolute; bottom:10px; right:15%;">
+      <svg width="160" height="52" viewBox="0 0 160 52" fill="none">
+        <rect x="0" y="5" width="100" height="35" rx="3" fill="#1e3a6e" stroke="rgba(0,150,255,0.5)" stroke-width="1"/>
+        <text x="50" y="26" fill="rgba(0,212,255,0.8)" font-family="'Exo 2'" font-weight="700" font-size="7" text-anchor="middle" letter-spacing="2">EGK</text>
+        <rect x="100" y="10" width="56" height="30" rx="4" fill="#2a4a8a" stroke="rgba(0,180,255,0.4)" stroke-width="1"/>
+        <rect x="108" y="14" width="36" height="14" rx="2" fill="rgba(100,200,255,0.4)"/>
+        <!-- brake lights -->
+        <rect x="0" y="14" width="5" height="8" rx="1" fill="rgba(255,50,50,0.9)"/>
+        <circle cx="18" cy="44" r="7" fill="#2244aa" stroke="#aac" stroke-width="1"/>
+        <circle cx="18" cy="44" r="3" fill="#aac"/>
+        <circle cx="36" cy="44" r="7" fill="#2244aa" stroke="#aac" stroke-width="1"/>
+        <circle cx="36" cy="44" r="3" fill="#aac"/>
+        <circle cx="80" cy="44" r="7" fill="#2244aa" stroke="#aac" stroke-width="1"/>
+        <circle cx="80" cy="44" r="3" fill="#aac"/>
+        <circle cx="140" cy="44" r="7" fill="#2244aa" stroke="#aac" stroke-width="1"/>
+        <circle cx="140" cy="44" r="3" fill="#aac"/>
+      </svg>
+    </div>
+
+  </div><!-- end platform -->
+  <div class="station-bg"></div>
+</div><!-- end station-scene -->
+```
+
+  </section>
+
+  <!-- STATS -->
+
+  <div class="stats-strip">
+    <div class="stat-item reveal">
+      <div class="stat-num">40%</div>
+      <div class="stat-label">DIESEL REDUCTION</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-num">15–25%</div>
+      <div class="stat-label">LOGISTICS COST SAVINGS</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-num">3</div>
+      <div class="stat-label">MAJOR HUBS CONNECTED</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-num">0</div>
+      <div class="stat-label">DIESEL CONSUMED ON RAIL</div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+
+  <section class="section" id="howitworks">
+    <div class="section-header">
+      <div class="section-tag">// SYSTEM OPERATION</div>
+      <h2 class="section-title">HOW <span>IT WORKS</span></h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card reveal">
+        <div class="step-num">01</div>
+        <div class="step-icon">🚛</div>
+        <div class="step-title">DRIVE ON</div>
+        <p class="step-desc">Trucks, cars and passengers board at smart logistics hubs — Penang ETS Cargo Terminal. Seamless ramp access for all vehicle types.</p>
+        <div class="step-accent"></div>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-num">02</div>
+        <div class="step-icon">⚡</div>
+        <div class="step-title">TRAVEL SMART</div>
+        <p class="step-desc">Vehicles ride on electrified ETS trains. Zero diesel consumption on the move. Drivers rest while cargo moves at speed.</p>
+        <div class="step-accent"></div>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-num">03</div>
+        <div class="step-icon">🗺️</div>
+        <div class="step-title">ARRIVE FAST</div>
+        <p class="step-desc">Faster, predictable and more reliable delivery windows. No traffic, no fuel stops. Penang–Johor without highway delays.</p>
+        <div class="step-accent"></div>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-num">04</div>
+        <div class="step-icon">🏁</div>
+        <div class="step-title">DRIVE OUT</div>
+        <p class="step-desc">Trucks exit at destination terminal and continue last-mile delivery under their own power. Johor ETS Cargo Terminal.</p>
+        <div class="step-accent"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROUTE -->
+
+  <section class="route-section" id="route">
+    <div class="section-header">
+      <div class="section-tag">// CORRIDOR</div>
+      <h2 class="section-title">THE <span>ROUTE</span></h2>
+    </div>
+    <div class="route-visual">
+      <div class="route-node">
+        <div class="route-dot">🚢</div>
+        <div class="route-name">PENANG</div>
+        <div class="route-sub">NORTH HUB</div>
+        <div class="route-time">ORIGIN</div>
+      </div>
+      <div class="route-line"></div>
+      <div class="route-node">
+        <div class="route-dot mid">🏙️</div>
+        <div class="route-name">KUALA LUMPUR</div>
+        <div class="route-sub">CENTRAL HUB</div>
+        <div class="route-time">≈ 2.5 HRS</div>
+      </div>
+      <div class="route-line"></div>
+      <div class="route-node">
+        <div class="route-dot">🌉</div>
+        <div class="route-name">JOHOR BAHRU</div>
+        <div class="route-sub">SOUTH HUB</div>
+        <div class="route-time">≈ 5 HRS TOTAL</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+
+  <section class="section" id="benefits">
+    <div class="section-header">
+      <div class="section-tag">// WHY MALAYSIA WINS</div>
+      <h2 class="section-title">STRATEGIC <span>BENEFITS</span></h2>
+    </div>
+    <div class="benefits-grid">
+      <div class="benefit-card reveal">
+        <div class="benefit-icon">⛽</div>
+        <div class="benefit-title">DIESEL REDUCTION</div>
+        <div class="benefit-value">40%</div>
+        <p class="benefit-desc">Lower national diesel dependency by shifting heavy freight onto electrified rail — directly addressing Malaysia's fuel subsidy burden.</p>
+      </div>
+      <div class="benefit-card reveal">
+        <div class="benefit-icon">💰</div>
+        <div class="benefit-title">LOGISTICS COST</div>
+        <div class="benefit-value">–25%</div>
+        <p class="benefit-desc">More efficient supply chains reduce per-unit logistics costs by 15–25%, making Malaysian exports globally competitive.</p>
+      </div>
+      <div class="benefit-card reveal">
+        <div class="benefit-icon">🌿</div>
+        <div class="benefit-title">CO₂ REDUCTION</div>
+        <div class="benefit-value">ESG+</div>
+        <p class="benefit-desc">Significant carbon footprint reduction supports Malaysia's ESG commitments and net-zero 2050 goals with measurable impact.</p>
+      </div>
+      <div class="benefit-card reveal">
+        <div class="benefit-icon">⏱️</div>
+        <div class="benefit-title">DELIVERY SPEED</div>
+        <div class="benefit-value">FAST</div>
+        <p class="benefit-desc">Predictable delivery windows eliminate highway uncertainty. Time-sensitive cargo arrives on schedule, every time.</p>
+      </div>
+      <div class="benefit-card reveal">
+        <div class="benefit-icon">🛡️</div>
+        <div class="benefit-title">SUPPLY CHAIN</div>
+        <div class="benefit-value">+100%</div>
+        <p class="benefit-desc">Increased resilience against road disruptions, flooding and fuel price volatility. Rail redundancy for critical logistics corridors.</p>
+      </div>
+      <div class="benefit-card reveal">
+        <div class="benefit-icon">🏗️</div>
+        <div class="benefit-title">INFRASTRUCTURE</div>
+        <div class="benefit-value">2X USE</div>
+        <p class="benefit-desc">Maximises existing KTM ETS rail investment by adding cargo capacity — no new tracks needed for Phase 1 deployment.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+
+  <section class="cta-section">
+    <div class="cta-quote">
+      "Malaysia doesn't need to invent the future.<br>
+      We need to adapt <em>proven systems</em> — fast."
+    </div>
+    <h2 class="cta-title">
+      BUILD RAIL.<br>
+      <span class="line2">MOVE TRUCKS SMARTER.</span><br>
+      <span class="line3">WIN COMPETITIVELY.</span>
+    </h2>
+    <div class="hero-cta" style="justify-content:center; margin-top:40px;">
+      <a href="https://egkhor.com.my" target="_blank"><button class="btn-primary">LEARN MORE AT EGK</button></a>
+      <button class="btn-outline">DOWNLOAD PROPOSAL</button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+
+  <footer>
+    <div class="footer-logo">
+      <img src="https://egkhor.com.my/home/wp-content/uploads/2026/02/cropped-IMG_7598.png" alt="EGK" onerror="this.style.display='none'">
+      <div>
+        <div style="font-family:'Exo 2'; font-weight:700; font-size:.9rem; letter-spacing:3px; color:var(--cyan);">EGK · ETS CARGO HYBRID</div>
+        <div class="footer-tagline">UPGRADE ETS. MOVE TRUCKS SMARTER. BUILD GREENER MALAYSIA.</div>
+      </div>
+    </div>
+    <div class="footer-copy">© 2026 EGK · ALL RIGHTS RESERVED · egkhor.com.my</div>
+  </footer>
+
+</div><!-- end wrapper -->
+
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if(e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('revealed'), i * 100);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Parallax on hero grid
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  const grid = document.querySelector('.hero-grid-lines');
+  if(grid) grid.style.transform = `translateY(${y * 0.3}px)`;
+});
+
+// Station sign cycling
+const destinations = [
+  { name: 'ETS CARGO PENANG TERMINAL', route: 'PENANG → KL → JOHOR ▸ NEXT: 14:32' },
+  { name: 'ETS CARGO KL SENTRAL HUB', route: 'KL → JOHOR → PENANG ▸ NEXT: 14:58' },
+  { name: 'ETS CARGO JOHOR TERMINAL', route: 'JOHOR → KL → PENANG ▸ NEXT: 15:20' },
+];
+let destIdx = 0;
+setInterval(() => {
+  destIdx = (destIdx + 1) % destinations.length;
+  const sign = document.querySelector('.station-sign-name');
+  const route = document.querySelector('.station-sign-route');
+  if(sign && route) {
+    sign.style.opacity = '0';
+    route.style.opacity = '0';
+    setTimeout(() => {
+      sign.textContent = destinations[destIdx].name;
+      route.textContent = destinations[destIdx].route;
+      sign.style.opacity = '1';
+      route.style.opacity = '1';
+    }, 400);
+  }
+}, 5000);
+document.querySelector('.station-sign-name').style.transition = 'opacity .4s';
+document.querySelector('.station-sign-route').style.transition = 'opacity .4s';
+</script>
+
+</body>
+</html>

@@ -413,6 +413,149 @@ line-height:1;
 }
 .stat-label { font-size:.8rem; color:rgba(255,255,255,0.5); letter-spacing:2px; margin-top:6px; }
 
+/* ── MUSHI SECTION ── */
+.mushi-section {
+  background: linear-gradient(135deg, #070D2A, #0A1540);
+  text-align: center;
+  padding: 80px 24px;
+  position: relative;
+  overflow: hidden;
+}
+.ms-inner {
+  max-width: 700px;
+  margin: 0 auto;
+}
+.ms-mushi {
+  width: clamp(100px, 14vw, 160px);
+  animation: mushiFloat 4s ease-in-out infinite;
+  filter: drop-shadow(0 12px 28px rgba(0, 194, 255, 0.4));
+  margin: 0 auto 20px;
+  display: block;
+}
+@keyframes mushiFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-18px); }
+}
+.ms-quote {
+  font-family: 'Fredoka One', system-ui, sans-serif;
+  font-size: clamp(1.1rem, 2.8vw, 1.6rem);
+  color: #fff;
+  line-height: 1.65;
+  margin-bottom: 14px;
+}
+.ms-quote .cyan { color: var(--cyan); }
+.ms-quote .yellow { color: var(--gold); }
+
+/* Fixed Mushi Corner */
+.mushi-corner-wrap {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 999;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+.mushi-corner-img {
+  width: 90px;
+  filter: drop-shadow(0 10px 25px rgba(0, 212, 255, 0.6));
+  transition: transform 0.4s;
+}
+.mushi-corner-wrap:hover .mushi-corner-img {
+  transform: scale(1.15) rotate(8deg);
+}
+.mushi-tip-box {
+  position: fixed;
+  bottom: 130px;
+  right: 40px;
+  background: rgba(0, 30, 80, 0.95);
+  backdrop-filter: blur(12px);
+  color: var(--cyan);
+  padding: 10px 18px;
+  border-radius: 30px;
+  font-size: 0.82rem;
+  white-space: nowrap;
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.4s;
+  z-index: 998;
+}
+
+/* Apps Grid */
+.apps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  padding: 20px 48px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.app-card {
+  background: var(--panel);
+  border: 1px solid rgba(0, 102, 255, 0.25);
+  border-radius: 12px;
+  padding: 24px 20px;
+  text-align: center;
+  transition: all 0.4s;
+  position: relative;
+  overflow: hidden;
+}
+.app-card:hover {
+  transform: translateY(-10px);
+  border-color: var(--cyan);
+  box-shadow: var(--glow);
+}
+.app-icon {
+  width: 82px;
+  height: 82px;
+  object-fit: contain;
+  margin-bottom: 16px;
+  border-radius: 12px;
+}
+.app-name {
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--cyan);
+  margin-bottom: 6px;
+}
+.app-cat {
+  font-size: 0.75rem;
+  color: var(--gold);
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+}
+.app-download {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.app-download a {
+  background: rgba(0, 212, 255, 0.1);
+  color: var(--cyan);
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  text-decoration: none;
+  transition: 0.3s;
+}
+.app-download a:hover {
+  background: var(--cyan);
+  color: #000;
+}
+.free-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #00C853;
+  color: #000;
+  font-size: 0.7rem;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-weight: 700;
+}
+  
 /* ── HOW IT WORKS ── */
 .section { padding: 100px 48px; }
 .section-header { text-align:center; margin-bottom: 64px; }
@@ -921,6 +1064,38 @@ footer { flex-direction:column; gap:16px; text-align:center; }
     </div>
   </div>
 
+<!-- MUSHI SAYS SECTION -->
+<section id="mushi-says" class="mushi-section">
+  <div class="ms-inner">
+    <img class="ms-mushi" src="https://egkhor.com.my/home/wp-content/uploads/2026/04/MUSHI.png" alt="Mushi">
+    <div class="ms-quote">
+      "Hey there! I'm <span class="cyan">Mushi</span>, your friendly guide for smarter travel and logistics!<br>
+      Want to ride the <span class="yellow">ETS Cargo Hybrid</span> or check live routes? I've got apps for that! 🚄✨"
+    </div>
+  </div>
+</section>
+
+<!-- FIXED MUSHI CORNER -->
+<div class="mushi-corner-wrap" id="mushiCorner">
+  <img class="mushi-corner-img" src="https://egkhor.com.my/home/wp-content/uploads/2026/04/MUSHI.png" alt="Mushi">
+</div>
+<div class="mushi-tip-box" id="mushiTip">Tap me for fun facts!</div>
+
+<!-- APPS SECTION -->
+<section class="section" id="apps" style="background: var(--navy);">
+  <div class="section-header">
+    <div class="section-tag">// POWERED BY EGK APPS</div>
+    <h2 class="section-title">GET THE <span>APPS</span></h2>
+    <p style="text-align:center; max-width:680px; margin:0 auto; color:rgba(255,255,255,0.65);">
+      Real-time route maps, live tracking, and smart navigation for KTM, MRT, LRT, and more — built for Malaysia and beyond.
+    </p>
+  </div>
+
+  <div class="apps-grid" id="appsGrid">
+    <!-- Populated by JavaScript -->
+  </div>
+</section>
+  
   <!-- HOW IT WORKS -->
 
   <section class="section" id="howitworks">
@@ -1089,6 +1264,65 @@ window.addEventListener('scroll', () => {
   const y = window.scrollY;
   const grid = document.querySelector('.hero-grid-lines');
   if(grid) grid.style.transform = `translateY(${y * 0.3}px)`;
+});
+
+  // Apps Data (cleaned & fixed)
+const apps = [
+  { name: "EGK NorthKTM Route", cat: "Navigation", icon: "https://egkhor.com.my/home/wp-content/uploads/2026/01/NorthKTMLG.jpg", free: true, android: "https://docs.google.com/forms/d/e/1FAIpQLSfEHbN8fp5a_5lannzMkkPYUdChTxbNyx1XuqMGsVef0e9cgQ/viewform", ios: "https://apps.apple.com/my/app/egk-northktm-map/id6749881242" },
+  { name: "EGK MyMRT Route", cat: "Navigation", icon: "https://egkhor.com.my/home/wp-content/uploads/2026/01/MyMRTLG.jpg", free: true, android: "https://docs.google.com/forms/d/e/1FAIpQLSdZb9gvIxLe_n2vxEoYV86VZnig_UBsV5C5DzoZ652bmcUjfg/viewform", ios: "https://apps.apple.com/my/app/egk-mymrt-map/id6749826690" },
+  { name: "EGK PutrajayaART Route", cat: "Navigation", icon: "https://egkhor.com.my/home/wp-content/uploads/2026/01/PutrajayaART.png", free: true, android: "https://docs.google.com/forms/d/e/1FAIpQLSc2mf3qmyZh8eiggiNlKUBQruOfnCXHl-77pV9sZxkh7HmgyQ/viewform", ios: "https://apps.apple.com/my/app/egk-putrajayaart/id6753611868" },
+  { name: "EGK BKKMLRT Route", cat: "Navigation", icon: "https://egkhor.com.my/home/wp-content/uploads/2026/01/BTSMRTLG.jpg", free: true, android: "https://docs.google.com/forms/d/e/1FAIpQLScrl98KoHgM2G6pcqx5jjPfCkRmQRvwuoakF_wKrsS5VIUiSw/viewform", ios: "https://apps.apple.com/my/app/egk-bts-mrt-map/id6751563227" },
+  { name: "EGK TriMetMax Route", cat: "Navigation", icon: "https://egkhor.com.my/home/wp-content/uploads/2026/01/OregonLG.png", free: true, android: "https://docs.google.com/forms/d/e/1FAIpQLScQtYcvWgZFHpCMUCsNzwiiz8aySuKQSs4VrLWkdDkZtUZZ3Q/viewform", ios: "https://apps.apple.com/my/app/egk-trimetmax-map/id6751476232" },
+  { name: "EGK SarawakART Route", cat: "Navigation", icon: "https://egkhor.com.my/home/wp-content/uploads/2026/01/D853E6C7-AF9E-4C12-9F80-C36258A4DBA7.jpg", free: true, android: "https://docs.google.com/forms/d/e/1FAIpQLSd5cPyqHdN2KxL5HZ8NvAS0OEZJq86GFxCMv_B2wZlYynwMRg/viewform", ios: "https://apps.apple.com/my/app/egk-sarawakart/id6752447610" },
+  { name: "EGK HCMC Route", cat: "Navigation", icon: "https://egkhor.com.my/home/wp-content/uploads/2026/01/EGKHCMC.jpg", free: true, android: "https://docs.google.com/forms/d/e/1FAIpQLScOSf6ybmOsCn_UQWL12HYVQj7OzigTrlaDQMR6f-FESq4WOA/viewform", ios: "https://apps.apple.com/my/app/egk-hcmc-map/id6752110493" },
+  { name: "EGK PENPerak KTMMap", cat: "Navigation", icon: "https://egkhor.com.my/home/wp-content/uploads/2026/01/PenPerakLG.png", free: true, android: "https://docs.google.com/forms/d/e/1FAIpQLSd7e-dFbTs18Ih4N8E_iQ8CS0XTNz65O8OxLZ3JB1b_W3Bkcg/viewform", ios: "https://apps.apple.com/my/app/egk-penperak-ktmmap/id6749882891" },
+  { name: "EGK JakartaMRT Route", cat: "Navigation", icon: "https://egkhor.com.my/home/wp-content/uploads/2026/01/EGKJakartaMRT.jpg", free: true, android: "https://docs.google.com/forms/d/e/1FAIpQLSetMB4wTwIR-Idjv_0VddiNWW5YqpAhzsLProl5LCfP_BliHw/viewform", ios: "https://apps.apple.com/my/app/egk-jakartam-lrt/id6752369542" },
+  { name: "EGK MutiaraLRT Route", cat: "Navigation", icon: "https://egkhor.com.my/home/wp-content/uploads/2026/01/MutiaraLG-1.jpg", free: true, android: "https://docs.google.com/forms/d/e/1FAIpQLSd3zrfDFDDHFsxu4iOdITSqXuaILAzKoWrWfK_Ed8hhTQDjlw/viewform", ios: "https://apps.apple.com/my/app/egk-mutiaralrt-map/id6749814615" },
+  { name: "EGK ERCL Route", cat: "Navigation", icon: "https://egkhor.com.my/home/wp-content/uploads/2026/01/EGKECRLMap.png", free: true, android: "https://docs.google.com/forms/d/e/1FAIpQLSdLYT_nIv22LNcUZDuv1-tk9ZDt_D-pOs7AP9ceXtdJNndehw/viewform", ios: "https://apps.apple.com/my/app/egk-ecrl-map/id6751459143" },
+  { name: "EGK MTR Route", cat: "Navigation", icon: "https://egkhor.com.my/home/wp-content/uploads/2026/01/mtr.png", free: true, android: "https://docs.google.com/forms/d/e/1FAIpQLScfZbsNusfgF1HliBEcZvAAeR7GqEoypXWExKrMFI5UuK84Uw/viewform", ios: "https://apps.apple.com/my/app/egk-mtr-app/id6751712829" }
+];
+
+// Render Apps
+function renderApps() {
+  const container = document.getElementById('appsGrid');
+  container.innerHTML = '';
+
+  apps.forEach(app => {
+    const card = document.createElement('div');
+    card.className = 'app-card';
+    card.innerHTML = `
+      <img src="${app.icon}" alt="${app.name}" class="app-icon">
+      <div class="free-badge">FREE</div>
+      <div class="app-name">${app.name}</div>
+      <div class="app-cat">${app.cat}</div>
+      <div class="app-download">
+        ${app.android ? `<a href="${app.android}" target="_blank">Android</a>` : ''}
+        ${app.ios ? `<a href="${app.ios}" target="_blank">iOS</a>` : ''}
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+  renderApps();
+
+  // Mushi corner interaction
+  const mushiCorner = document.getElementById('mushiCorner');
+  const tipBox = document.getElementById('mushiTip');
+  
+  mushiCorner.addEventListener('click', () => {
+    const tips = [
+      "Did you know? ETS Cargo can reduce diesel use by up to 40%!",
+      "Try the EGK NorthKTM app for live train tracking 🚄",
+      "Mushi loves helping you plan smarter journeys!",
+      "Download all EGK apps — they're completely free!"
+    ];
+    tipBox.textContent = tips[Math.floor(Math.random() * tips.length)];
+    tipBox.style.opacity = '1';
+    setTimeout(() => tipBox.style.opacity = '0', 4000);
+  });
 });
 
 // Station sign cycling
